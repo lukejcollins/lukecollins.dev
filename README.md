@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# lukecollins.dev
 
-## Getting Started
+A minimal blog built with Next.js 16 (App Router) and Sanity v4. Posts are stored in Sanity and rendered via GROQ queries.
 
-First, run the development server:
+## Requirements
+- Node.js 18.18+ (Next.js 16 requirement)
+- npm 10+
+- A Sanity project with a dataset that allows public read access (or a read token wired in if you prefer private datasets)
 
+## Setup
+1) Install dependencies:
+```bash
+npm install
+```
+2) Create `.env.local` with your Sanity project info:
+```bash
+NEXT_PUBLIC_SANITY_PROJECT_ID=your-project-id
+NEXT_PUBLIC_SANITY_DATASET=production
+# Optional: defaults to 2025-11-28 if omitted
+NEXT_PUBLIC_SANITY_API_VERSION=2025-11-28
+```
+3) Start the app:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+Visit `http://localhost:3000` for the blog and `http://localhost:3000/studio` for the Studio.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
+- `npm run dev` – Next dev server (includes Studio route)
+- `npm run build` – Production build
+- `npm run start` – Start a production build locally
+- `npm run lint` – ESLint
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Content model
+Defined in `sanity/schemaTypes/post.ts`:
+- `title` (string, required)
+- `slug` (slug from title, required)
+- `publishedAt` (datetime)
+- `excerpt` (text)
+- `content` (portable text blocks)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## How it works
+- `app/page.tsx` lists all posts with title, publish date, and excerpt.
+- `app/[slug]/page.tsx` renders a single post using PortableText.
+- GROQ queries live in `lib/sanity.queries.ts`; the client is configured in `lib/sanity.client.ts`.
+- Sanity Studio is configured via `sanity.config.ts` and mounted at `app/studio/[[...tool]]/page.tsx`.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment notes
+- Ensure the Sanity environment variables are set wherever you deploy (e.g., Vercel project settings).
+- If your dataset is private, update `lib/sanity.client.ts` to pass a token and set `useCdn: false`.
