@@ -51,5 +51,9 @@ export async function logToLoki(
     });
   } catch (err) {
     console.error("loki push failed", err);
+    try {
+      console.error("loki payload", JSON.stringify(body));
+    } catch {
+    }
   }
 }

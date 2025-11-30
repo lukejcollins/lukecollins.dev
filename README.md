@@ -49,7 +49,7 @@ Defined in `sanity/schemaTypes/post.ts`:
 - Ensure the Sanity environment variables are set wherever you deploy (e.g., Vercel project settings).
 - If your dataset is private, update `lib/sanity.client.ts` to pass a token and set `useCdn: false`.
 
-## Grafana Cloud Loki logging (Vercel)
+## Grafana Cloud Loki logging
 - Set env vars in Vercel: `GRAFANA_LOKI_HOST=https://<stack-id>.logs.grafana.net`, `GRAFANA_LOKI_USER=<user>`, `GRAFANA_LOKI_API_KEY=<api_key>`, and optionally `LOG_ENV=production`.
 - Use the server-only helper to push logs to Loki (works in API routes/route handlers/server actions):
 ```ts
@@ -63,7 +63,10 @@ export async function GET() {
 - The helper no-ops when credentials are missing, and labels stay low-cardinality (`app`, `env`, `level`, plus any you pass).
 - Automated logging:
   - Request lifecycle (`kind=request`) for handlers using `logRequestStart` (e.g., `/api/health`, `/api/log-client`) with `route/method/status` labels and duration in payload.
+  - Edge logging (`kind=request`, `runtime=edge`) for matched routes via `proxy.ts`.
   - Server request errors (`kind=errorhook`) via `instrumentation.ts` -> `onRequestError`.
   - Sanity fetches (`kind=sanity`) via `fetchFromSanity` with duration and optional context (e.g., route/intent/slug) in payload.
   - Client runtime errors (`kind=client`) captured by `ClientErrorReporter` and POSTed to `/api/log-client`.
   - Process-level crashes (`kind=process`) from `setupProcessLogging` for `unhandledRejection`/`uncaughtException`.
+  - Console bridge (sampled via `LOG_CONSOLE_SAMPLE_RATE`, default 0.1) forwards a sample of `console.error`/`warn` to Loki.
+  - Optional helper for ISR (`logRevalidate`) to keep payloads consistent when logging revalidate events.

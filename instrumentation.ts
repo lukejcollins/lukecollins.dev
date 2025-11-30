@@ -5,6 +5,8 @@ export async function register() {
     await import('./sentry.server.config');
     const { setupProcessLogging } = await import('./lib/runtimeLogging');
     setupProcessLogging();
+    const { bridgeConsole } = await import('./lib/consoleBridge');
+    bridgeConsole();
   }
 
   if (process.env.NEXT_RUNTIME === 'edge') {
