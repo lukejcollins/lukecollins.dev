@@ -2,7 +2,7 @@ import {notFound} from 'next/navigation'
 import {PortableText} from '@portabletext/react'
 import type {PortableTextBlock} from 'sanity'
 import Link from 'next/link'
-import {sanityClient} from '@/lib/sanity.client'
+import {fetchFromSanity} from '@/lib/sanity.client'
 import {allPostsQuery, postBySlugQuery} from '@/lib/sanity.queries'
 
 type Post = {
@@ -15,13 +15,22 @@ type Post = {
 }
 
 async function getPost(slug: string): Promise<Post | null> {
-  return sanityClient.fetch(postBySlugQuery, {slug})
+  return fetchFromSanity<Post | null>({
+    query: postBySlugQuery,
+    params: {slug},
+    queryName: 'postBySlug',
+    context: {slug},
+  })
 }
 
 type Params = Promise<{slug: string}>
 
 export async function generateStaticParams() {
-  const posts: {slug: string}[] = await sanityClient.fetch(allPostsQuery)
+  const posts: {slug: string}[] = await fetchFromSanity({
+    query: allPostsQuery,
+    queryName: 'allPosts',
+    context: {route: '/[slug]', intent: 'generate_static_params'},
+  })
   return posts.map((post) => ({slug: post.slug}))
 }
 
@@ -53,7 +62,6 @@ export default async function BlogPostPage(
 
   return (
     <main className="max-w-2xl mx-auto py-8 px-4">
-      {/* Back link */}
       <Link
         href="/"
         className="text-sm text-gray-400 hover:text-gray-200 underline mb-6 inline-block"

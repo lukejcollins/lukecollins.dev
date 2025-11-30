@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import {sanityClient} from '@/lib/sanity.client'
+import {fetchFromSanity} from '@/lib/sanity.client'
 import {allPostsQuery} from '@/lib/sanity.queries'
 
 type Post = {
@@ -11,7 +11,11 @@ type Post = {
 }
 
 async function getPosts(): Promise<Post[]> {
-  return sanityClient.fetch(allPostsQuery)
+  return fetchFromSanity<Post[]>({
+    query: allPostsQuery,
+    queryName: 'allPosts',
+    context: {route: '/', intent: 'list_posts'},
+  })
 }
 
 export const metadata = {

@@ -7,15 +7,25 @@ import { useEffect } from "react";
 export default function GlobalError({ error }: { error: Error & { digest?: string } }) {
   useEffect(() => {
     Sentry.captureException(error);
+    const payload = {
+      message: error.message,
+      stack: error.stack,
+      digest: error.digest,
+      path: window.location.pathname,
+    };
+
+    fetch("/api/log-client", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload),
+      keepalive: true,
+    }).catch(() => {
+    });
   }, [error]);
 
   return (
     <html>
       <body>
-        {/* `NextError` is the default Next.js error page component. Its type
-        definition requires a `statusCode` prop. However, since the App Router
-        does not expose status codes for errors, we simply pass 0 to render a
-        generic error message. */}
         <NextError statusCode={0} />
       </body>
     </html>
