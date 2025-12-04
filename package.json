@@ -14,6 +14,7 @@
     "@sanity/image-url": "^1.2.0",
     "@sanity/vision": "^4.19.0",
     "@sentry/nextjs": "^10.27.0",
+    "@vercel/otel": "^2.1.0",
     "groq": "^4.19.0",
     "next": "16.0.5",
     "next-sanity": "^11.6.10",

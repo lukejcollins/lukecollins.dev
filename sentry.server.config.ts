@@ -13,6 +13,9 @@ Sentry.init({
   // Enable logs to be sent to Sentry
   enableLogs: true,
 
+  // Disable Sentry's own OpenTelemetry setup; Vercel OTEL is registered in instrumentation.ts
+  skipOpenTelemetrySetup: true,
+
   // Enable sending user PII (Personally Identifiable Information)
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/options/#sendDefaultPii
   sendDefaultPii: true,

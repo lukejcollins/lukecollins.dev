@@ -1,7 +1,22 @@
+import { registerOTel } from '@vercel/otel';
 import * as Sentry from '@sentry/nextjs';
 
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
+    await registerOTel({
+      serviceName: process.env.OTEL_SERVICE_NAME || 'next-blog-sanity',
+      attributes: {
+        'deployment.environment': process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? 'local',
+      },
+      instrumentationConfig: {
+        fetch: {
+          ignoreUrls: [
+            /logs-prod-012\.grafana\.net/i,
+            /otlp-gateway-prod-eu-west-2\.grafana\.net/i,
+          ],
+        },
+      },
+    });
     await import('./sentry.server.config');
     const { setupProcessLogging } = await import('./lib/runtimeLogging');
     setupProcessLogging();
