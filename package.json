@@ -10,26 +10,34 @@
   },
   "dependencies": {
     "@portabletext/react": "^5.0.0",
-    "@sanity/client": "^7.13.1",
+    "@sanity/client": "^7.20.0",
     "@sanity/image-url": "^1.2.0",
+<<<<<<< HEAD
     "@sanity/vision": "^4.19.0",
     "@sentry/nextjs": "^10.27.0",
     "groq": "^4.19.0",
     "next": "16.0.9",
     "next-sanity": "^11.6.10",
+=======
+    "@sanity/vision": "^4.22.0",
+    "@sentry/nextjs": "^10.45.0",
+    "groq": "^4.22.0",
+    "next": "^16.2.1",
+    "next-sanity": "^11.6.12",
+>>>>>>> 7bf8cfa (update-dependencies)
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "sanity": "^4.19.0",
-    "styled-components": "^6.1.19"
+    "sanity": "^4.22.0",
+    "styled-components": "^6.3.12"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
+    "@tailwindcss/postcss": "^4.2.2",
+    "@types/node": "^20.19.37",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.0.5",
-    "tailwindcss": "^4",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.1",
+    "tailwindcss": "^4.2.2",
     "typescript": "^5"
   }
 }
