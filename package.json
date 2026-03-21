@@ -12,19 +12,11 @@
     "@portabletext/react": "^5.0.0",
     "@sanity/client": "^7.20.0",
     "@sanity/image-url": "^1.2.0",
-<<<<<<< HEAD
-    "@sanity/vision": "^4.19.0",
-    "@sentry/nextjs": "^10.27.0",
-    "groq": "^4.19.0",
-    "next": "16.0.9",
-    "next-sanity": "^11.6.10",
-=======
     "@sanity/vision": "^4.22.0",
     "@sentry/nextjs": "^10.45.0",
     "groq": "^4.22.0",
     "next": "^16.2.1",
     "next-sanity": "^11.6.12",
->>>>>>> 7bf8cfa (update-dependencies)
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "sanity": "^4.22.0",
